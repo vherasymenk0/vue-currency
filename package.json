@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.31"
+    "axios": "^1.7.2",
+    "vue": "^3.4.31",
+    "vue-router": "4"
   },
   "devDependencies": {
+    "@types/node": "^20.14.11",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.39",

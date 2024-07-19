@@ -9,7 +9,7 @@
 }
 
 .loader {
-  @apply border-12 border-solid border-gray-200 border-t-blue-500 rounded-full w-20 h-20;
+  @apply border-12 border-solid border-gray-200 border-t-green-600 rounded-full w-20 h-20;
   animation: spin 2s linear infinite;
 }
 

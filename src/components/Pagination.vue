@@ -28,10 +28,10 @@ const handle = (page: number) => {
 
 <style scoped>
 .btn {
-  @apply enabled:hover:bg-blue-200 px-4 py-2 mx-1 border transition-all rounded-md;
+  @apply enabled:hover:bg-green-200 px-4 py-2 mx-1 border transition-all rounded-md;
   
   &:disabled {
-    @apply text-white bg-blue-400 cursor-default;
+    @apply text-white bg-green-600 cursor-default;
   }
 }
 </style>

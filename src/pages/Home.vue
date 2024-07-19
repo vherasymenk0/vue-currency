@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed, reactive, ref } from 'vue'
 import axios from 'axios'
-import Pagination from '@/components/Pagination.vue'
 import CurrencyList from '@/components/CurrencyList.vue'
 import { useRoute } from 'vue-router'
 import { Currency } from '@/types/currency.ts'
@@ -35,11 +34,12 @@ onMounted(async () => {
   <MainLayout>
     <template #title>Курси валют НБУ станом на {{ currentDate }}</template>
     <template #content>
-      <Loader v-if="isLoading" />
-      <template v-else>
-        <CurrencyList :currencies="pageData" />
-        <Pagination :totalItems="data.length" :page="currentPage" />
-      </template>
+      <CurrencyList
+        :currencies="pageData"
+        :current-page="currentPage"
+        :total-items="data.length"
+        :isLoading="isLoading"
+      />
     </template>
   </MainLayout>
 </template>

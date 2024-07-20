@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { CurrencyModel, EditCurrency } from '@/types/currency.ts'
+import { EditCurrency } from '@/types/currency.ts'
 import MainLayout from '@/layout/MainLayout.vue'
 import Loader from '@/components/Loader.vue'
 import { Api } from '@/services/api.ts'

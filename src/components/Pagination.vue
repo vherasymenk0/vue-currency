@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 const totalPages = computed(() => Math.ceil(props.totalItems / props.perPage))
-const pageMock = '...'
+const pageMock = -1
 const route = useRoute()
 const router = useRouter()
 
@@ -39,7 +39,7 @@ const getPagination = computed(() => {
     
     acc.push(idx)
     return acc
-  }, [])
+  }, [] as number[])
 })
 </script>
 
@@ -54,7 +54,7 @@ const getPagination = computed(() => {
       >
         {{ page }}
       </button>
-      <span v-else class="mx-2">{{ pageMock }}</span>
+      <span v-else class="mx-2">{{ '...' }}</span>
     </li>
   </ul>
 </template>

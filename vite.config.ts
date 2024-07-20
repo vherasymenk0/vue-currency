@@ -2,8 +2,10 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'url'
 
-// https://vitejs.dev/config/
+const isProduction = process.env.NODE_ENV === 'production'
+
 export default defineConfig({
+  base: isProduction ? '/vue-currency' : '/',
   plugins: [vue()],
   resolve: {
     alias: {

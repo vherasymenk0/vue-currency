@@ -3,7 +3,7 @@ import MainLayout from '@/layout/MainLayout.vue'
 import CurrencyList from '@/components/CurrencyList.vue'
 import { useModifiedCurrencies } from '@/hooks/useModifiedCurrencies.ts'
 
-const { isLoading, data, remove } = useModifiedCurrencies()
+const { data, remove } = useModifiedCurrencies()
 </script>
 
 <template>
@@ -12,7 +12,6 @@ const { isLoading, data, remove } = useModifiedCurrencies()
     <template #content>
       <CurrencyList
         :currencies="data"
-        :is-loading="isLoading"
         with-date
         can-delete
         @delete="remove"

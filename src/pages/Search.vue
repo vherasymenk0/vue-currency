@@ -3,9 +3,10 @@ import { ref } from 'vue'
 import CurrencyList from '@/components/CurrencyList.vue'
 import MainLayout from '@/layout/MainLayout.vue'
 import { Api } from '@/services/api.ts'
+import { CurrencyModel } from '@/types/currency.ts'
 
 const selectedDate = ref('')
-const currencies = ref([])
+const currencies = ref<CurrencyModel[]>([])
 
 const fetchData = async () => {
   const date = selectedDate.value.replace(/-/g, '')

@@ -6,7 +6,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <nav class="bg-[#FDFDFE] p-4 border-b-2 border-[#6acb9a]">
+  <nav class="bg-[#FDFDFE] p-4 border-b-2 border-[#6acb9a] sticky top-0">
     <ul class="flex gap-6">
       <li
         v-for="path in ROUTE_PATHS"
@@ -22,8 +22,8 @@ const route = useRoute()
       </li>
     </ul>
   </nav>
-  <main>
-    <h1 class="text-xl px-4 sm:text-2xl mb-10 text-center mx-auto mt-10">
+  <main class="mb-10">
+    <h1 class="text-xl px-4 sm:text-2xl mb-6 md:mb-10 text-center mx-auto mt-6 md:mt-10">
       <slot name="title" />
     </h1>
     <slot name="content" />

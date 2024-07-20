@@ -10,7 +10,7 @@ import { slugDateToDate } from '@/helpers'
 
 const route = useRoute()
 const router = useRouter()
-const { data, set } = useModifiedCurrencies()
+const { data, set, update } = useModifiedCurrencies()
 
 const isLoading = ref(false)
 const currency = ref<EditCurrency | null>(null)
@@ -48,7 +48,8 @@ onMounted(async () => {
 
 const saveChanges = () => {
   if (currency.value) {
-    set(currency.value)
+    if (currency.value.alreadyModified) update(currency.value)
+    else set(currency.value)
     router.push('/modified')
   }
 }

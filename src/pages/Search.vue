@@ -20,9 +20,9 @@ const fetchData = async () => {
   <MainLayout>
     <template #title>Пошук курсу за датою</template>
     <template #content>
-      <div class="flex justify-center w-auto mx-4">
-        <div class="md:w-96 w-72 mx-auto">
-          <label for="date" class="block text-center text-green-700 text-sm font-bold mb-2">Оберіть дату:</label>
+      <div class="mx-auto max-w-3xl md:-mt-5">
+        <div class="w-44 mx-4">
+          <label for="date" class="block text-green-700 text-sm font-bold mb-2">Оберіть дату:</label>
           <input
             type="date"
             id="date"

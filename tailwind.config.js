@@ -10,6 +10,7 @@ export default {
         '12': '12px'
       },
       height: {
+        '88': '22rem',
         '128': '32rem'
       },
       colors: {

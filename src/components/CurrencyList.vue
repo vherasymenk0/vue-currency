@@ -45,7 +45,7 @@ const pageData = computed(() => {
   <template v-else>
     <div class="max-w-3xl mx-auto px-4">
       <CurrencySearch :value="searchQuery" @update:value="val => searchQuery = val" />
-      <div class="h-96 lg:h-128 overflow-y-auto p-4 border border-gray-200 rounded-lg shadow bg-white">
+      <div class="h-88 lg:h-128 overflow-y-auto p-4 border border-gray-200 rounded-lg shadow bg-white">
         <CurrencyListEmpty v-if="filteredCurrencies.length === 0" />
         <div v-else>
           <div

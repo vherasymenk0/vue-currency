@@ -1,32 +1,27 @@
 <script setup lang="ts">
-import { onMounted, computed, reactive, ref } from 'vue'
-import axios from 'axios'
+import { onMounted, reactive, ref } from 'vue'
 import CurrencyList from '@/components/CurrencyList.vue'
-import { useRoute } from 'vue-router'
-import { Currency } from '@/types/currency.ts'
+import { CurrencyModel } from '@/types/currency.ts'
 import MainLayout from '@/layout/MainLayout.vue'
-import Loader from '@/components/Loader.vue'
+import { Api } from '@/services/api.ts'
 
-const route = useRoute()
+const data = reactive<CurrencyModel[]>([])
 const isLoading = ref(false)
-const currentPage = computed(() => Number(route.query?.page) || 1)
 const currentDate = new Intl.DateTimeFormat('uk', {
   dateStyle: 'full',
   timeZone: 'Europe/Kyiv'
 }).format(new Date)
 
-const data = reactive<Currency[]>([])
-const pageData = computed(() => {
-  const start = (currentPage.value - 1) * 10
-  const end = start + 10
-  return data.slice(start, end)
-})
-
 onMounted(async () => {
-  isLoading.value = true
-  const response = await axios.get('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json')
-  data.push(...response.data)
-  isLoading.value = false
+  try {
+    isLoading.value = true
+    const response = await Api.getCurrentRates()
+    data.push(...response.data)
+  } catch (e: unknown) {
+    throw new Error(String(e))
+  } finally {
+    isLoading.value = false
+  }
 })
 </script>
 
@@ -35,9 +30,7 @@ onMounted(async () => {
     <template #title>Курси валют НБУ станом на {{ currentDate }}</template>
     <template #content>
       <CurrencyList
-        :currencies="pageData"
-        :current-page="currentPage"
-        :total-items="data.length"
+        :currencies="data"
         :isLoading="isLoading"
       />
     </template>

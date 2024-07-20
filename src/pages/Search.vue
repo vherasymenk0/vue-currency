@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
-import axios from 'axios'
 import CurrencyList from '@/components/CurrencyList.vue'
 import MainLayout from '@/layout/MainLayout.vue'
+import { Api } from '@/services/api.ts'
 
 const selectedDate = ref('')
 const currencies = ref([])
@@ -12,16 +12,29 @@ watchEffect(() => {
 })
 
 const fetchData = async () => {
-  const response = await axios.get(`https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=${selectedDate.value.replace(/-/g, '')}&json`)
+  const date = selectedDate.value.replace(/-/g, '')
+  const response = await Api.getRateByDate(date)
   currencies.value = response.data
 }
 
 </script>
+
 <template>
   <MainLayout>
-    <template #title>Пошук курсу</template>
+    <template #title>Пошук курсу за датою</template>
     <template #content>
-      <input type="date" v-model="selectedDate" @change="fetchData" class="mb-4 p-2 border" />
+      <div class="flex justify-center w-auto mx-4">
+        <div class="md:w-96 w-72 mx-auto">
+          <label for="date" class="block text-center text-green-700 text-sm font-bold mb-2">Оберіть дату:</label>
+          <input
+            type="date"
+            id="date"
+            v-model="selectedDate"
+            @change="fetchData"
+            class="mb-4 p-2 border border-gray-300 rounded w-full focus:outline-none focus:border-green-600"
+          />
+        </div>
+      </div>
       <CurrencyList :currencies="currencies" />
     </template>
   </MainLayout>

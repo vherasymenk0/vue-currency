@@ -31,7 +31,7 @@ const pageData = computed(() => {
 <template>
   <Loader v-if="isLoading" />
   <template v-else>
-    <div class="max-w-4xl mx-auto px-4">
+    <div class="max-w-3xl mx-auto px-4">
       <div class="h-96 lg:h-128 overflow-y-auto p-4 border border-gray-200 rounded-lg shadow bg-white">
         <CurrencyListEmpty v-if="currencies.length === 0" />
         <div v-else>

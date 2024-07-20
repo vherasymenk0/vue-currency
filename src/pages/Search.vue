@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import CurrencyList from '@/components/CurrencyList.vue'
 import MainLayout from '@/layout/MainLayout.vue'
 import { Api } from '@/services/api.ts'
 
 const selectedDate = ref('')
 const currencies = ref([])
-
-watchEffect(() => {
-  console.log('selectedDate -->', selectedDate.value)
-})
 
 const fetchData = async () => {
   const date = selectedDate.value.replace(/-/g, '')

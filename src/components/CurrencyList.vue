@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { CurrencyModel } from '@/types/currency.ts'
 import Pagination from '@/components/Pagination.vue'
 import Loader from '@/components/Loader.vue'
-import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getCurrencySlug } from '@/helpers'
 import CurrencyListEmpty from '@/components/CurrencyListEmpty.vue'
 import DeleteCurrencyButton from '@/components/DeleteCurrencyButton.vue'
+import CurrencySearch from '@/components/CurrencySearch.vue'
 
 const props = defineProps<{
   currencies: CurrencyModel[]
@@ -20,11 +21,22 @@ defineEmits<{ (e: 'delete', id: number): void }>()
 const route = useRoute()
 const currentPage = computed(() => Number(route.query?.page) || 1)
 const perPage = 10
+const searchQuery = ref('')
+
+const filteredCurrencies = computed(() => {
+  if (!searchQuery.value) {
+    return props.currencies
+  }
+  return props.currencies.filter(currency =>
+    currency.txt.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+    currency.cc.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+})
 
 const pageData = computed(() => {
   const start = (currentPage.value - 1) * perPage
   const end = start + perPage
-  return props.currencies.slice(start, end)
+  return filteredCurrencies.value.slice(start, end)
 })
 </script>
 
@@ -32,8 +44,9 @@ const pageData = computed(() => {
   <Loader v-if="isLoading" />
   <template v-else>
     <div class="max-w-3xl mx-auto px-4">
+      <CurrencySearch :value="searchQuery" @update:value="val => searchQuery = val" />
       <div class="h-96 lg:h-128 overflow-y-auto p-4 border border-gray-200 rounded-lg shadow bg-white">
-        <CurrencyListEmpty v-if="currencies.length === 0" />
+        <CurrencyListEmpty v-if="filteredCurrencies.length === 0" />
         <div v-else>
           <div
             v-for="currency in pageData"
@@ -60,7 +73,7 @@ const pageData = computed(() => {
           </div>
         </div>
       </div>
-      <Pagination :totalItems="currencies.length" :currentPage="currentPage" :per-page="perPage" />
+      <Pagination :totalItems="filteredCurrencies.length" :currentPage="currentPage" :per-page="perPage" />
     </div>
   </template>
 </template>

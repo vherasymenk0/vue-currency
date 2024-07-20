@@ -32,7 +32,7 @@ class ApiService {
   async getRateByCode(code: string, date: string) {
     return this.axios.get<CurrencyModel[]>('/exchange', {
       params: {
-        valcode: code.toUpperCase(),
+        valcode: code,
         date,
         json: true
       }

@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { CurrencyModel } from '@/types/currency.ts'
+import { CurrencyModel, EditCurrency } from '@/types/currency.ts'
 import MainLayout from '@/layout/MainLayout.vue'
 import Loader from '@/components/Loader.vue'
 import { Api } from '@/services/api.ts'
+import { useModifiedCurrencies } from '@/hooks/useModifiedCurrencies.ts'
+import { slugDateToDate } from '@/helpers'
 
 const route = useRoute()
 const router = useRouter()
+const { data, set } = useModifiedCurrencies()
+
 const isLoading = ref(false)
-const currency = ref<CurrencyModel | null>(null)
+const currency = ref<EditCurrency | null>(null)
 
 onMounted(async () => {
   isLoading.value = true
@@ -21,8 +25,20 @@ onMounted(async () => {
   }
   
   try {
-    const response = await Api.getRateByCode(code, date)
-    currency.value = response.data[0]
+    const formattedDate = slugDateToDate(date)
+    const formattedCode = code.toUpperCase()
+    const modified =
+      data.value.filter(({ exchangedate, cc }) => formattedDate === exchangedate && formattedCode === cc)[0]
+    
+    if (modified) {
+      currency.value = {
+        ...modified,
+        alreadyModified: true
+      }
+    } else {
+      const response = await Api.getRateByCode(code, date)
+      currency.value = response.data[0]
+    }
   } catch (e) {
     throw new Error(String(e))
   } finally {
@@ -32,21 +48,31 @@ onMounted(async () => {
 
 const saveChanges = () => {
   if (currency.value) {
-    const modified = (JSON.parse(localStorage.getItem('modified')) || []) as CurrencyModel[]
-    modified.push(currency.value)
-    
-    localStorage.setItem(`modified`, JSON.stringify(modified))
+    set(currency.value)
     router.push('/modified')
   }
 }
-
 </script>
+
 <template>
   <MainLayout>
     <template #title v-if="currency">Редагувати {{ currency.txt }} за {{ currency.exchangedate }}</template>
     <template #content>
       <Loader v-if="isLoading" />
       <div v-else-if="currency" class="max-w-md mx-auto">
+        <div
+          v-if="currency.alreadyModified"
+          class="flex items-center justify-center max-w-md mb-4 mx-4 p-4 bg-green-100 text-green-700 border border-green-300 rounded"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="h-6 w-6 mr-2"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Курс вже редаговано</span>
+        </div>
         <div class="mx-4 p-8 bg-white shadow-md rounded-lg">
           <label for="rate" class="block text-green-700 text-sm font-bold mb-2">Курс (UAH):</label>
           <input

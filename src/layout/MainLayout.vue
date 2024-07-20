@@ -11,14 +11,14 @@ const route = useRoute()
       <li
         v-for="path in ROUTE_PATHS"
         :key="path.to"
-        :class="{group: route.path !== path.to}"
-        class="relative w-max item text-black"
+        class=" w-max item text-black"
       >
-        <router-link :to="path.to">
+        <router-link :to="path.to" :class="{group: route.path !== path.to}" class="relative">
           {{ path.label }}
+          <span class="absolute -bottom-1 left-1/2 w-0 transition-all h-0.5 bg-[#4D4D4F] group-hover:w-3/6"></span>
+          <span class="absolute -bottom-1 right-1/2 w-0 transition-all h-0.5 bg-[#4D4D4F] group-hover:w-3/6"></span>
         </router-link>
-        <span class="absolute -bottom-1 left-1/2 w-0 transition-all h-0.5 bg-[#4D4D4F] group-hover:w-3/6"></span>
-        <span class="absolute -bottom-1 right-1/2 w-0 transition-all h-0.5 bg-[#4D4D4F] group-hover:w-3/6"></span>
+      
       </li>
     </ul>
   </nav>
@@ -31,17 +31,10 @@ const route = useRoute()
 </template>
 
 <style scoped>
-li {
-  @apply cursor-default;
-  
+a {
   &:not(.group) {
-    a {
-      @apply text-[#007b47] pointer-events-none;
-    }
+    @apply cursor-default;
+    @apply text-[#007b47] pointer-events-none;
   }
-}
-
-.group {
-  @apply cursor-pointer;
 }
 </style>
